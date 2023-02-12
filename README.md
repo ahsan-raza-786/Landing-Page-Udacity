@@ -1,4 +1,5 @@
 # Project Title
+Landing Page - Udacity Nano Degree
 # Table of contents
 
 - [Project Title](#project-title)
@@ -6,7 +7,6 @@
 - [Development](#development)
 - [Contribute](#contribute)
 - [License](#license)
-- [Footer](#footer)
 
 # Development
 [(Back to top)](#table-of-contents)
@@ -23,5 +23,3 @@ The Contributor for this is Ahsan.
 
 [MIT License](https://github.com/ahsan-raza-786/Landing-Page-Udacity/blob/main/LICENSE)
 
-# Footer
-[(Back to top)](#table-of-contents)
