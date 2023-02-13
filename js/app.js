@@ -29,6 +29,9 @@ const navList = document.querySelector('#navbar__list');
 const sections = document.querySelectorAll('section');
 const footer = document.querySelector('footer');
 const header = document.querySelector('.page__header');
+const menuLinks = document.getElementsByClassName('navbar__menu');
+const activeClass = 'your-active-class';
+const menuLinkHover = 'menu__link__hover';
 // End Global Variables
 
 // Requirment:build the nav
@@ -36,10 +39,15 @@ const header = document.querySelector('.page__header');
 function buildNav(){
     sections.forEach(section => {
         //Create the li elements that contained inside the ul
-        const navButton = document.createElement('li');
-        //Insert the html text to  the li
-        navButton.insertAdjacentHTML("afterbegin",`<a href="#${section.id}" class="menu__link">${section.dataset.nav}</a>`);
-        //Append the li to the ul
+         navButton = document.createElement('li');
+         //Modify Code as per Review to include a more dynamic way rather then hardcode href
+         let links = document.createElement("a");
+         links.classList.add("menu__link");
+         links.textContent = section.attributes.getNamedItem("data-nav").value;
+         links.setAttribute("data-link", section.attributes.getNamedItem("id").value);
+
+        navButton.appendChild(links);
+
         navList.appendChild(navButton);
 
         //scrollBehavior Function Invoke
@@ -54,29 +62,6 @@ buildNav();
 
 //End build the nav
 
-// Requirment:Add class 'active' to section when near top of viewport
-// Start of Set the Section class 'active' when it near to the top of viewport
-function activeSection (){
-    // Select all anchor using "menu__link" class
-    const navActive = document.querySelectorAll(".menu__link")
-    sections.forEach((section, i)=>{
-        //Get the boundingrect for each section 
-        const sectionBond = section.getBoundingClientRect();
-        //Check if the section is in viewport or not 
-        if (sectionBond.top <= 380 && sectionBond.bottom >= 350){
-            //section in viewport accourding to top and bottom boundings
-            //add 'your-active-class' class to the specific section
-            section.classList.add("your-active-class");
-            //add 'active_button' class to the specific nav button according to section ID
-            navActive[i].classList.add("active_button");
-        } else{
-            //Remove both section and navButton active classes when section is off sight
-            section.classList.remove("your-active-class");
-            navActive[i].classList.remove("active_button");
-        }
-    })
-}
-// End of Set the Section class 'active' when it near to the top of viewport
 
 // Requirement:Scroll to anchor ID using scrollTO event
 // Start of Scroll to anchor ID using scrollTO event
@@ -93,8 +78,35 @@ function scrollBehavior(navButton, section){
 
 //Start of the Scroll Event to execute the functions of activeSection and toggleNavBar 
 window.addEventListener('scroll',(event)=>{
-    activeSection();
-})
+    let scroll_Bar_Pos = document.documentElement.scrollTop;
+    for (section of sections) {
+        if (scroll_Bar_Pos >= section.offsetTop - 350 &&
+            scroll_Bar_Pos <= section.offsetTop + section.offsetHeight - 380) {
+            viewedSectionId = section.attributes.id.value;
+            removeStyle();
+            document.getElementById(viewedSectionId).classList.add(activeClass);
+            addStyle(viewedSectionId);
+        };
+    };
+});
+
+function removeStyle() {
+    for (section of sectionList) {
+        section.classList.remove(activeClass);
+    };
+    for (menuLink of menuLinks) {
+        menuLink.classList.remove(menuLinkHover);
+    };
+};
+
+function addStyle(id) {
+    for (menuLink of menuLinks) {
+        if (menuLink.attributes.getNamedItem("data-link").value === id) {
+            menuLink.classList.add(menuLinkHover);
+        };
+    };
+};
+
 //End of the Scroll Event to execute the functions of activeSection and toggleNavBar 
 
 // Requirement:Start of GO UP Button
